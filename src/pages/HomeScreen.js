@@ -7,7 +7,7 @@ import ModuleStore from "../utils/ModuleStore";
 
 // images
 import wasm from "../img/icon-wasm.svg";
-import vr from "../img/icon-vr.svg";
+import learn from "../img/icon-learn.svg";
 import create from "../img/icon-create.svg";
 import queue from "../img/icon-queue.svg";
 import rust from "../img/icon-rust.svg";
@@ -58,7 +58,7 @@ const HomeScreen = props => {
               </Link>
             </div>
             <div className="started__section">
-              <img className="started__icon" src={create} alt="webassembly" />
+              <img className="started__icon" src={learn} alt="webassembly" />
               <span className="started__text">
                 Learn more about Mozilla and the Arch
               </span>
