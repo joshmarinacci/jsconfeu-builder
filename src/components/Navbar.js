@@ -39,7 +39,6 @@ const GithubButton = props => {
       text = AuthStore.getCurrentUser().displayName;
       userImg = AuthStore.getCurrentUser()._json.avatar_url;
       text = AuthStore.getCurrentUser().displayName;
-      console.log("yoyoyo", userImg);
       callback = () => AuthStore.logout();
     }
   }
@@ -76,6 +75,10 @@ const GithubButton = props => {
 };
 
 const Navbar = props => {
+    let editorLink = ""
+    if(AuthStore.isLoggedIn() && AuthStore.isAdmin()) {
+        editorLink = <NavbarLink link="/queue-editor" title="Queue Editor"/>
+    }
   return (
     <div className="navbar">
       <div className="navbar__wrap">
@@ -97,7 +100,7 @@ const Navbar = props => {
           <NavbarLink link="/code" title="Code a Module" />
           <NavbarLink link="/queue" title="What's Coming Next" />
           <NavbarLink link="/about" title="About" />
-          <NavbarLink link="/queue-editor" title="Queue Editor" />
+            {editorLink}
         </ul>
         <GithubButton />
       </div>

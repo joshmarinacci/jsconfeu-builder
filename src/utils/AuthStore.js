@@ -22,6 +22,10 @@ class AuthStore {
     unlistenToLogin = (cb) => this.listeners = this.listeners.filter(l => l !== cb)
     getCurrentUser = () => this.currentUser
     isLoggedIn = () => this.currentUser !== null
+    isAdmin = () => {
+        if(!this.currentUser) return false
+        return this.currentUser.admin
+    }
     logout = () => {
         localStorage.clear()
         this.currentUser = null
