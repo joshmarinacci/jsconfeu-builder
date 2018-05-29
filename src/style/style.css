@@ -887,6 +887,12 @@ select {
     .container {
       width: 1000px; } }
 
+.content {
+  background-color: #000000;
+  min-height: 80vh;
+  min-height: calc(100vh - 108px);
+  position: relative; }
+
 .navbar {
   background-color: #ffffff;
   padding: 24px 1rem;
@@ -1652,11 +1658,6 @@ input[type="button"].button--block {
 
 .p-text {
   text-shadow: 10px 10px 10px black, -10px -10px 10px black; }
-
-.content {
-  background-color: #000000;
-  min-height: 80vh;
-  position: relative; }
 
 .overlay-scrim {
   position: absolute;

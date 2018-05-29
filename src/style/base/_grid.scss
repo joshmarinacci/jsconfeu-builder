@@ -21,3 +21,11 @@
     width: (map-get($breakpoints, large));
   }
 }
+
+// not really grid, but not sure where to put
+.content {
+  background-color: $black;
+  min-height: 80vh;
+  min-height: calc(100vh - 108px);
+  position: relative;
+}
