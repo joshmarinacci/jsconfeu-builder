@@ -27,22 +27,6 @@ import ReactGA from 'react-ga';
 ReactGA.initialize('UA-000000-01');
 ReactGA.pageview(window.location.pathname + window.location.search);
 
-const UserLoginButton = props => {
-  if (AuthStore.isLoggedIn()) {
-    return (
-      <a href="#" onClick={() => AuthStore.logout()}>
-        Logout {AuthStore.getCurrentUser().displayName}
-      </a>
-    );
-  } else {
-    return (
-      <a href="#" onClick={() => AuthStore.start()} className="round-button">
-        Connect with GitHub
-      </a>
-    );
-  }
-};
-
 class App extends Component {
   constructor(props) {
     super(props);
