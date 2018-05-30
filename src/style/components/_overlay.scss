@@ -1,0 +1,170 @@
+// ----------------------------------------------------------------------------
+// Overalay / Modal
+// ----------------------------------------------------------------------------
+
+.overlay-scrim {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(150, 150, 150, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.overlay {
+  display: flex;
+  padding: 1em;
+  background-color: black;
+  flex-direction: column;
+  padding: space(4);
+  min-height: 30vh;
+  min-width: 60%;
+  border-radius: 6px;
+  position: relative;
+  z-index: z-index(content);
+
+  ul {
+  }
+
+  ul li {
+    margin-bottom: space(1);
+    @include typesize(1);
+  }
+}
+
+.overlay-pattern-wrap {
+  background-color: $black;
+  border-radius: 6px;
+  position: relative;
+  min-width: 60%;
+  min-height: 20vh;
+
+  .overlay {
+    background: transparent;
+  }
+}
+
+.overlay-pattern-wrap .pattern--bottom {
+  box-shadow: none;
+  opacity: 0.2;
+}
+
+// PREVIEW
+
+.preview {
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  padding: space(4);
+  width: 90%;
+  border-radius: 6px;
+  position: relative;
+
+  .pattern--bottom {
+    box-shadow: none;
+    opacity: 0.2;
+  }
+
+  .queue-module {
+    width: 100%;
+  }
+}
+
+.preview__content {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: space(3);
+  z-index: z-index(content);
+}
+
+.preview__buttons {
+  display: flex;
+  z-index: z-index(content);
+
+  justify-content: space-between;
+}
+
+.preview__form-wrap {
+  padding-right: space(4);
+  width: 40%;
+
+  span {
+    @include typesize(2);
+    font-weight: bold;
+    margin-bottom: space(2);
+    display: inline-block;
+  }
+
+  label {
+    font-weight: bold;
+    margin-top: space(1);
+    margin-bottom: space(2);
+    display: inline-block;
+  }
+}
+
+.preview__form input,
+.preview__form textarea {
+  //border: 1px solid red;
+  background-color: #333;
+  color: #ddd;
+  padding-left: 0.6rem;
+  padding-right: 0.6rem;
+  padding-top: 0.6rem;
+  padding-bottom: 0.6rem;
+  margin-bottom: space(2);
+  font-size: 0.7rem;
+  font-family: inherit;
+  border-radius: 6px;
+  width: 100%;
+}
+
+.preview__tag-input-wrap {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.preview__tag-input {
+}
+
+.preview__tag-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding: 0;
+  margin: 0;
+  grid-row-gap: 12px;
+  grid-column-gap: 12px;
+
+  li {
+    display: flex;
+    align-items: flex-start;
+  }
+}
+
+.preview__add-tag-button {
+  padding: 0.5em 1em;
+  background-color: black;
+  border: 2px solid $cyan;
+  border-radius: 40px;
+  color: white;
+  margin-left: space(2);
+  transition: all $base-time $base-ease;
+
+  &:hover {
+    background-color: $cyan;
+    color: $black;
+  }
+}
+
+.preview__tag-button {
+  // margin:0.25em;
+  background: white;
+  color: black;
+  border-radius: 1rem;
+  padding: 0.25em;
+  margin-right: 10px;
+}

@@ -5,6 +5,10 @@ import { Link } from "react-router-dom";
 import ModuleStore from "../utils/ModuleStore";
 import AuthStore from "../utils/AuthStore";
 import { json2data, makePNG } from "../utils/RenderUtils";
+import Pattern from "../components/Pattern";
+
+// images
+import buildImg from "../img/build.png";
 
 class CodeScreen extends Component {
   constructor(props) {
@@ -148,43 +152,80 @@ class CodeScreen extends Component {
 
 const ErrorScreen = props => {
   return (
-    <article className="overlay-content">
-      <h2>Error</h2>
-      <p>{props.error.message}</p>
-      <HBox>
-        {props.error.actions.map((act, i) => {
-          return (
-            <button key={i} onClick={act.action}>
-              {act.caption}
-            </button>
-          );
-        })}
-      </HBox>
-    </article>
+    <div className="overlay-pattern-wrap">
+      <div className="overlay">
+        <h2>Error</h2>
+        <p>{props.error.message}</p>
+        <div>
+          {props.error.actions.map((act, i) => {
+            return (
+              <button
+                className="mt3 button button--primary"
+                key={i}
+                onClick={act.action}
+              >
+                {act.caption}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+      <Pattern position="bottom" />
+    </div>
   );
 };
 const InfoScreen = props => {
   return (
-    <article className="overlay-content">
-      <h2>Code a Module</h2>
-      <p>Here are some instructions to code a module</p>
-      <div className="row">
-        <button className="button button--primary" onClick={props.dismissInfo}>
-          Dismiss
-        </button>
+    <div className="overlay-pattern-wrap">
+      <div className="overlay">
+        <h2>How To Code a Module:</h2>
+        <ul>
+          <li>
+            <strong>1.</strong> Choose an example project and click ‘Create’.
+            Make your code changes.
+          </li>
+          <li>
+            <strong>2.</strong> Click ‘Build & Preview’ at the{" "}
+            <em>top of the editor</em>.
+            <img
+              style={{ height: "40px", marginLeft: "10px" }}
+              src={buildImg}
+              alt="build"
+            />
+          </li>
+          <li>
+            <strong>3.</strong> Click ‘Go Back’ to return to your code and make
+            changes.
+          </li>
+          <li>
+            <strong>4.</strong> Repeat steps 2 & 3 until you like your
+            animation.
+          </li>
+          <li>
+            <strong>5.</strong> Fill out your information and click ‘Submit’.
+          </li>
+        </ul>
+        <div className="row">
+          <button
+            className="button button--primary"
+            onClick={props.dismissInfo}
+          >
+            Dismiss
+          </button>
+        </div>
       </div>
-    </article>
+      <Pattern position="bottom" />
+    </div>
   );
 };
 
 const Progress = props => {
   return (
-    <article className="overlay-content">
+    <div className="overlay">
       <p>
-        progress screen: <b>{props.text}</b>{" "}
-        <i className="fa fa-pulse fa-spinner" />
+        <b>{props.text}</b> <i className="fa fa-pulse fa-spinner" />
       </p>
-    </article>
+    </div>
   );
 };
 
@@ -192,7 +233,7 @@ const TagButton = props => {
   return (
     <li>
       <button
-        className="tag-button fa fa-close"
+        className="preview__tag-button fa fa-close"
         onClick={() => props.deleteTag(props.tag)}
       />
       {props.tag}
@@ -225,19 +266,20 @@ class TagEditor extends Component {
   render() {
     return (
       <div>
-        <HBox>
+        <div className="preview__tag-input-wrap">
           <input
             type="text"
-            placeholder="Filter name"
+            className="preview__tag-input"
+            placeholder="Tag Name"
             value={this.state.query}
             onChange={this.editQuery}
             onKeyDown={this.keyPress}
           />
-          <button className="add-tag-button" onClick={this.addTag}>
+          <button className="preview__add-tag-button" onClick={this.addTag}>
             Add a Tag
           </button>
-        </HBox>
-        <ul>
+        </div>
+        <ul className="preview__tag-list">
           {this.props.tags.map(t => (
             <TagButton key={t} tag={t} deleteTag={this.deleteTag} />
           ))}
@@ -247,21 +289,21 @@ class TagEditor extends Component {
   }
 }
 
-const VBox = props => {
-  const style = props.style || {};
-  style.display = "flex";
-  style.flexDirection = "column";
-  return <div style={style}>{props.children}</div>;
-};
-const HBox = props => {
-  const style = props.style || {};
-  style.display = "flex";
-  style.flexDirection = "row";
-  return <div style={style}>{props.children}</div>;
-};
-const Label = props => {
-  return <label style={{ flex: 1 }}>{props.children}</label>;
-};
+// const VBox = props => {
+//   const style = props.style || {};
+//   style.display = "flex";
+//   style.flexDirection = "column";
+//   return <div style={style}>{props.children}</div>;
+// };
+// const HBox = props => {
+//   const style = props.style || {};
+//   style.display = "flex";
+//   style.flexDirection = "row";
+//   return <div style={style}>{props.children}</div>;
+// };
+// const Label = props => {
+//   return <label style={{ flex: 1 }}>{props.children}</label>;
+// };
 const Spacer = props => {
   return <span style={{ flex: 1 }} />;
 };
@@ -330,79 +372,89 @@ class PreviewSubmit extends Component {
   render() {
     const module = this.state.module;
     return (
-      <article className="content">
-        <HBox style={{ padding: "1em" }}>
-          <VBox style={{ flex: 0.3, margin: "0 1em" }}>
-            <h3>Submit your art for review</h3>
-            <form id="submit-form" onSubmit={e => e.preventDefault()}>
-              <HBox>
+      <div className="preview">
+        <div className="preview__content">
+          <div className="preview__form-wrap">
+            <span>Submit your module for review</span>
+            <form
+              className="preview__form"
+              id="submit-form"
+              onSubmit={e => e.preventDefault()}
+            >
+              <div>
                 <input
                   type="text"
                   placeholder="Title"
                   value={this.getCurrentTitle()}
                   onChange={e => this.edit("title", e.target.value)}
                 />
-              </HBox>
-              <VBox>
+              </div>
+              <div>
                 <textarea
                   placeholder="Description"
                   value={this.getCurrentDescription()}
                   rows={2}
                   onChange={e => this.edit("description", e.target.value)}
                 />
-              </VBox>
-              <HBox>
+              </div>
+              <div>
                 <input
                   type="text"
-                  placeholder="Author Name/Email"
+                  placeholder="Author Name"
                   value={this.getCurrentAuthor()}
                   onChange={e => this.edit("author", e.target.value)}
                 />
-              </HBox>
-              <HBox>
-                <Label>Choose Tags</Label>
-              </HBox>
-              <HBox>
+              </div>
+              <div>
+                <label>Choose Tags</label>
+              </div>
+              <div>
                 <TagEditor
                   tags={this.getCurrentTags()}
                   onChange={tags => this.edit("tags", tags)}
                 />
-              </HBox>
+              </div>
             </form>
-          </VBox>
+          </div>
           <QueueModulePanel
             module={module}
             scale={40}
             threedee={true}
             hideInfo={true}
           />
-        </HBox>
-        <HBox style={{ padding: "0.5em" }}>
+        </div>
+        <div className="preview__buttons">
           <button
             className="button button--primary"
             onClick={this.props.backClicked}
           >
-            Back
+            Go Back
           </button>
           <Spacer />
           <button className="button button--primary" onClick={this.onSubmit}>
-            submit
+            Submit
           </button>
-        </HBox>
-      </article>
+        </div>
+        <Pattern position="bottom" />
+      </div>
     );
   }
 }
 
 const SubmitDone = props => {
   return (
-    <article className="content">
-      <h1>submit done screen</h1>
-      <div>thank you </div>
-      <Link to="/queue" className="button button--primary">
-        What's Coming Next
-      </Link>
-    </article>
+    <div className="overlay">
+      <h2>Submission Complete</h2>
+      <p>
+        Thank you for submitting your module. Your module will be reviewed, and,
+        if approved, added to the queue to be displayed on the Arch.
+      </p>
+      <div>
+        <Link to="/queue" className="mt4 button button--primary">
+          View the Queue
+        </Link>
+      </div>
+    </div>
   );
 };
 
