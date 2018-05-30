@@ -3,25 +3,3 @@
 
 // Just put stuff here that is temporary / testing / will be moved later etc
 // ----------------------------------------------------------------------------
-
-.overlay-scrim {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: rgba(255, 255, 255, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.overlay-content {
-  display: flex;
-  border: 1px solid white;
-  padding: 1em;
-  /*width: 500px;*/
-  /*height: 400px;*/
-  background-color: black;
-  flex-direction: column;
-}

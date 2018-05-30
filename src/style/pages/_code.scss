@@ -1,17 +1,5 @@
-#submit-form input, #submit-form textarea {
-  //border: 1px solid red;
-  background-color: #333;
-  color: #ddd;
-  padding: 0.5rem;
-  margin: 0.5rem;
-  font-size: 0.7rem;
-  font-family: inherit;
-  border-radius: 0.25rem;
-}
-
-
 #submit-form .tag-button {
-  margin:0.25em;
+  // margin:0.25em;
   background: white;
   color: black;
   border-radius: 1rem;
@@ -24,5 +12,5 @@
 
 #submit-form .add-tag-button {
   font-size: 0.5rem;
-  padding: 0.5em 1.0em;
+  padding: 0.5em 1em;
 }

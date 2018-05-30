@@ -68,15 +68,15 @@
 //   width: 400px;
 // }
 
-.main {
-  display: grid;
-  grid-template-columns: [left] 1fr [middle] 2fr [right];
-  grid-template-rows: [toolbar] 2em [search] 2em [body] 0.5fr [list] 30em [bottom];
-  background-color: #000;
-  grid-gap: 1px;
-  border: 0px solid greenyellow;
-  height: 100vh;
-}
+// .main {
+//   display: grid;
+//   grid-template-columns: [left] 1fr [middle] 2fr [right];
+//   grid-template-rows: [toolbar] 2em [search] 2em [body] 0.5fr [list] 30em [bottom];
+//   background-color: #000;
+//   grid-gap: 1px;
+//   border: 0px solid greenyellow;
+//   height: 100vh;
+// }
 
 .toolbar {
   background: #222;
