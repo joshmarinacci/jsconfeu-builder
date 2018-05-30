@@ -29,6 +29,7 @@ class ModuleStore {
           .then(res => res.json())
           .then(res => {
               console.log("got the modules", res);
+              this.fire('modules',res)
               return res;
           })
           .catch(e => {
@@ -112,6 +113,25 @@ class ModuleStore {
               console.log('result of submitting',res)
               return res
           })
+  }
+
+  archiveModule = m => {
+      console.log("archiving the module")
+      fetch(`${Constants.BASE_URL}/modules/archive/${m._id}`,{
+          method:'POST',
+          body: '',
+          mode: "cors",
+          headers: {
+              "Content-Type": "application/json",
+              "access-key": AuthStore.getAccessToken()
+          }
+      })
+          .then(res=>res.json())
+          .then(res => {
+              console.log("marked the module as archived",res)
+              return res
+          })
+          .then(()=>this.findAllModules())
   }
   addModuleToQueue = m => {
     this.queue.expanded.push(m);

@@ -31,8 +31,10 @@ export default class QueueEditor extends Component {
     );
   }
   addToQueue = m => ModuleStore.addModuleToQueue(m);
+  archiveModule = m => ModuleStore.archiveModule(m);
   deleteFromQueue = (m, i) => ModuleStore.deleteModuleFromQueue(m, i);
-  queueUpdated = queue => this.setState({ queue: queue });
+    queueUpdated = queue => this.setState({ queue: queue });
+    modulesUpdated = modules => this.setState({ modules: modules });
   updateSearch = e =>
     this.setState({
       filter: makeNameFilter(e.target.value),
@@ -40,10 +42,12 @@ export default class QueueEditor extends Component {
     });
   clearSearch = () => this.setState({ filter: makeIdentityFilter() });
   componentDidMount() {
-    ModuleStore.on("queue", this.queueUpdated);
+      ModuleStore.on("queue", this.queueUpdated);
+      ModuleStore.on("modules", this.modulesUpdated);
   }
   componentWillUnmount() {
-    ModuleStore.off("queue", this.queueUpdated);
+      ModuleStore.off("queue", this.queueUpdated);
+      ModuleStore.off("modules", this.modulesUpdated);
   }
   render() {
     const queueModules = ModuleStore.getQueueModules();
@@ -89,6 +93,7 @@ export default class QueueEditor extends Component {
               key={m._id}
               module={m}
               onAdd={() => this.addToQueue(m)}
+              onArchive={()=>this.archiveModule(m)}
             />
           ))}
         </ul>
@@ -159,22 +164,48 @@ class EditableModulePanel extends Component {
   }
 }
 
+const VBox = props => {
+    const style = props.style || {};
+    style.display = "flex";
+    style.flexDirection = "column";
+    return <div style={style}>{props.children}</div>;
+};
+const HBox = props => {
+    const style = props.style || {};
+    style.display = "flex";
+    style.flexDirection = "row";
+    return <div style={style}>{props.children}</div>;
+};
+
+function formatTimestamp(ts) {
+    if(!ts) return ""
+    const date = new Date(ts)
+    date.getHours()
+    return `${date.getFullYear()}/${date.getMonth()}/${date.getDate()}
+     ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
+}
+
+
 const ModuleSummaryPanel = props => {
-  return (
-    <div
-      style={{
-        padding: "1em",
-        backgroundColor: "#333",
-        display: "flex",
-        flexDirection: "row",
-        margin: "1em"
-      }}
-    >
-      <b>{props.module.title}</b>
-      <i>&nbsp;</i>
-      <i>{props.module.tags.join(",")}</i>
-      <i style={{ flex: 1 }}>&nbsp;</i>
-      <button onClick={props.onAdd}>+</button>
-    </div>
-  );
+    const style = {
+        padding:'1em',
+        margin:'0.25em',
+        backgroundColor:'#333',
+        border:'1px solid gray',
+    }
+    let tags = []
+    if(props.module.tags) tags = props.module.tags
+    return <VBox style={style}>
+        <HBox>
+            <b>{props.module.title}</b>
+            <i style={{ flex: 1 }}>&nbsp;</i>
+            <button onClick={props.onAdd}>+</button>
+        </HBox>
+        <HBox>
+            <i>{formatTimestamp(props.module.timestamp)}</i>
+            <i>{tags.join(",")}&nbsp;</i>
+            <i style={{ flex: 1 }}>&nbsp;</i>
+            <a onClick={props.onArchive}>x</a>
+        </HBox>
+    </VBox>
 };
