@@ -98,7 +98,7 @@ module.exports.png2data = function(anim, pngs) {
             const img = new Image()
             img.onload = () => {
                 const context = canvas.getContext('2d');
-                context.fillStyle = (i%2==0)?'red':'blue'
+                context.fillStyle = (i%2===0)?'red':'blue'
                 context.fillRect(0,0,canvas.width,canvas.height)
                 context.drawImage(img,0,0)
                 res(context.getImageData(0, 0, canvas.width, canvas.height))

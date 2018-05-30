@@ -8,7 +8,7 @@ import ModuleStore from "../utils/ModuleStore";
 // images
 import wasm from "../img/icon-wasm.svg";
 import learn from "../img/icon-learn.svg";
-import create from "../img/icon-create.svg";
+// import create from "../img/icon-create.svg";
 import queue from "../img/icon-queue.svg";
 import rust from "../img/icon-rust.svg";
 
@@ -52,8 +52,7 @@ export default class HomeScreen extends Component {
                         <div className="started__row">
                             <div className="started__section">
                                 <img
-                                    className="started__img"
-                                    className="started__icon"
+                                    className="started__img started_icon"
                                     src={wasm}
                                     alt="webassembly"
                                 />

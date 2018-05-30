@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink} from "react-router-dom";
 
 // Components
 import Hamburger from "../components/Hamburger";
@@ -51,7 +51,7 @@ const GithubButton = props => {
         onClick={callback}
       >
         <div className="navbar__user-border">
-          <img className="navbar__user" alt="profile photo" src={userImg} />
+          <img className="navbar__user" alt="profile" src={userImg} />
         </div>
         Log Out
       </a>
@@ -59,19 +59,10 @@ const GithubButton = props => {
   } else {
     return (
       <a className="navbar__button" href="#" onClick={callback}>
-        <span>Connect with Github</span>
+        <span>{text}</span>
       </a>
     );
   }
-
-  // return (
-  //   <a className="navbar__button" href="#" onClick={callback}>
-  //     <span>
-  //       <img className="navbar__user" alt="profile photo" src={userImg} />
-  //       {text}
-  //     </span>
-  //   </a>
-  // );
 };
 
 const Navbar = props => {

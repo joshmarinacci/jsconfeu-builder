@@ -9,11 +9,6 @@ import gradient from "../img/pattern-top.svg";
 // components
 import Pattern from "../components/Pattern";
 
-// styles
-const divStyle = {
-  backgroundImage: `url(${gradient})`
-};
-
 const AboutScreen = props => {
   return (
     <div className="content">
