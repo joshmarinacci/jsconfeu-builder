@@ -50,8 +50,6 @@ export default class ArchwayPanel extends Component {
             // material.emissive = new THREE.Color(0xFFFFFF)
           }
         }
-        this.clearToColor(0xff00ff);
-        // this.loadFrame(TestFrames.frames[0], TestFrames.height, TestFrames.width);
         window.obj = object;
         this.arch = object;
         this.loaded = true;
@@ -70,24 +68,12 @@ export default class ArchwayPanel extends Component {
     if (!this.props.frames) return;
     const data = this.props.frames.data;
     const frame = data[this.currentFrame % data.length];
-    this.loadFrame(frame, this.props.frames.rows, this.props.frames.cols);
+    this.loadFrame(frame);
   }
   componentWillUnmount() {
     this.mounted = false;
   }
-  clearToColor(hexColorInteger, rows = this.rows, columns = this.columns) {
-    for (let r = 0; r < rows; r++) {
-      for (let c = 0; c < columns; c++) {
-        let material = this.materials.get(`${r}x${c}`);
-        if (!material) {
-          console.log("material not found", `${r}x${c}`);
-          continue;
-        }
-        material.color.setHex(hexColorInteger);
-      }
-    }
-  }
-  loadFrame(frame, rows = this.rows, columns = this.columns) {
+  loadFrame(frame) {
     for (let r = 0; r < frame.height; r++) {
       for (let c = 0; c < frame.width; c++) {
         let material = this.materials.get(`${r}x${c}`);

@@ -164,8 +164,8 @@ class ModuleStore {
     getThumbnailForModule(m) {
         if(this.images[m._id]) return this.images[m._id]
         const img = new Image()
+        img.onload = () => this.fire('thumbnail')
         img.src = m.thumbnail
-        console.log("generating image for thumbnail",img,m)
         this.images[m._id] = img
         return this.images[m._id]
     }
