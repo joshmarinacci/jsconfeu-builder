@@ -198,14 +198,25 @@ const ModuleSummaryPanel = props => {
     return <VBox style={style}>
         <HBox>
             <b>{props.module.title}</b>
+            <span>&nbsp;by&nbsp;</span>
+            <b>{props.module.author}</b>
             <i style={{ flex: 1 }}>&nbsp;</i>
             <button onClick={props.onAdd}>+</button>
         </HBox>
         <HBox>
-            <i>{formatTimestamp(props.module.timestamp)}</i>
-            <i>{tags.join(",")}&nbsp;</i>
-            <i style={{ flex: 1 }}>&nbsp;</i>
+            <p>{props.module.description}</p>
+        </HBox>
+        <HBox>
+            <span>made </span>
+            <b>&nbsp;{formatTimestamp(props.module.timestamp)}</b>
+            <span>&nbsp;tags</span>
+            <b>&nbsp;{tags.join(",")}</b>
+            <span style={{ flex: 1 }}>&nbsp;</span>
             <a onClick={props.onArchive}>x</a>
+        </HBox>
+        <HBox>
+            <span>ID</span>
+            <b>&nbsp;{props.module._id}</b>
         </HBox>
     </VBox>
 };
