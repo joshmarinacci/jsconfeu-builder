@@ -57,8 +57,8 @@ module.exports.makePNG = function(anim,frame) {
     const ctx = canvas.getContext('2d')
     ctx.fillStyle = 'red'
     ctx.fillRect(0,0,canvas.width,canvas.height)
-    for(let i=0; i<anim.cols; i++) {
-        for(let j=0; j<anim.rows; j++) {
+    for(let j=0; j<anim.rows; j++) {
+        for(let i=0; i<anim.cols; i++) {
             const c = frame[j][i]
             ctx.fillStyle = `rgb(${c[0]},${c[1]},${c[2]})`
             ctx.fillRect(i,j,1,1)
@@ -131,6 +131,20 @@ module.exports.json2data = function(anim, json) {
                     id.data[n+3] = 255 // force the alpha to 100% opaque
                 }
             }
+            //make 0,0 be gray
+            id.data[0]=128
+            id.data[1]=128
+            id.data[2]=128
+
+            //make 0,1 be gray
+            id.data[4]=128
+            id.data[5]=128
+            id.data[6]=128
+
+            //make 0,2 be gray
+            id.data[8]=128
+            id.data[9]=128
+            id.data[10]=128
             res(id)
         })
     }
