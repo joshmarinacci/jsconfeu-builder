@@ -6,9 +6,6 @@ const THREE = require("three");
 export default class ArchwayPanel extends Component {
   componentDidMount() {
     this.mounted = true;
-    this.rows = Constants.ROWS;
-    this.columns = Constants.COlS;
-
     this.scene = new THREE.Scene();
     this.scene.add(new THREE.AmbientLight(0xffffff, 0.5));
     const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
@@ -76,7 +73,7 @@ export default class ArchwayPanel extends Component {
   loadFrame(frame) {
     for (let r = 0; r < frame.height; r++) {
       for (let c = 0; c < frame.width; c++) {
-        let material = this.materials.get(`${r}x${c}`);
+        let material = this.materials.get(`${c}x${r}`);
         if (!material) continue;
         const n = (r * frame.width + c) * 4;
         const color =
@@ -125,31 +122,3 @@ export default class ArchwayPanel extends Component {
   mouseUp = e => {};
 }
 
-const TestColors = [
-  0x000000ff,
-  0x0000ffff,
-  0x00ff00ff,
-  0x00ffffff,
-  0xff0000ff,
-  0xff00ffff,
-  0xffff00ff,
-  0xffffffff
-];
-
-const TestFrames = {
-  width: 36,
-  height: 44,
-  frames: []
-};
-
-for (var frame = 0; frame < 5; frame++) {
-  const oddColor = TestColors[frame % TestColors.length];
-  const evenColor = TestColors[(frame + 1) % TestColors.length];
-  let frameData = [];
-  for (let r = 0; r < TestFrames.height; r++) {
-    for (let c = 0; c < TestFrames.width; c++) {
-      frameData[r * TestFrames.width + c] = c % 2 == 0 ? evenColor : oddColor;
-    }
-  }
-  TestFrames.frames[frame] = frameData;
-}

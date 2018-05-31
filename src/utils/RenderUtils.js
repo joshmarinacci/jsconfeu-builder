@@ -32,9 +32,6 @@ module.exports.makeContext = function(frameset) {
 }
 module.exports.makeFrameset = function (w,h,frameCount) {
     const frames = []
-    // const w = 44
-    // const h = 36
-    // const frameCount = 10;
     for(let i=0; i<frameCount; i++) {
         const f1 = []
         for(let x = 0; x<w*h; x++) {
@@ -131,20 +128,6 @@ module.exports.json2data = function(anim, json) {
                     id.data[n+3] = 255 // force the alpha to 100% opaque
                 }
             }
-            //make 0,0 be gray
-            id.data[0]=128
-            id.data[1]=128
-            id.data[2]=128
-
-            //make 0,1 be gray
-            id.data[4]=128
-            id.data[5]=128
-            id.data[6]=128
-
-            //make 0,2 be gray
-            id.data[8]=128
-            id.data[9]=128
-            id.data[10]=128
             res(id)
         })
     }
