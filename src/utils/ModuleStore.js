@@ -1,6 +1,6 @@
 import Constants from "../Constants";
 import AuthStore from "./AuthStore";
-import {data2png, makePNG, png2data} from './RenderUtils'
+import {data2pngs, pngs2data} from './RenderUtils'
 
 class ModuleStore {
   constructor() {
@@ -63,7 +63,7 @@ class ModuleStore {
           .then(res => {
               if(res.success) {
                   const anim = res.doc.manifest.animation
-                  return png2data(anim,anim.data).then((decoded) => {
+                  return pngs2data(anim,anim.data).then((decoded) => {
                       anim.data = decoded
                       return res.doc
                   })
@@ -90,7 +90,7 @@ class ModuleStore {
 
 
       const anim = module.manifest.animation
-      return data2png(anim,anim.data).then(pngs=>{
+      return data2pngs(anim,anim.data).then(pngs=>{
           anim.data = pngs
           return module
       }).then((module)=>{
