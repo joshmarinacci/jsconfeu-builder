@@ -110,6 +110,10 @@ module.exports.png2data = function(anim, pngs) {
     const canvas = document.createElement('canvas')
     canvas.width = anim.cols
     canvas.height = anim.rows
+    if(ROTATE_CANVAS) {
+        canvas.width = anim.rows
+        canvas.height = anim.cols
+    }
     function ld(png,i) {
         return new Promise((res,rej) =>{
             const img = new Image()
@@ -119,7 +123,7 @@ module.exports.png2data = function(anim, pngs) {
                 context.fillStyle = (i%2===0)?'red':'blue'
                 context.fillRect(0,0,canvas.width,canvas.height)
                 context.drawImage(img,0,0)
-                res(context.getImageData(0, 0, canvas.width, canvas.height))
+                return res(context.getImageData(0, 0, canvas.width, canvas.height))
             }
             img.src = png
         })

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import * as OBJLoader from "../utils/OBJLoader.js";
 import Constants from "../Constants";
 const THREE = require("three");
+const ROTATE_CANVAS = true
 
 export default class ArchwayPanel extends Component {
   componentDidMount() {
@@ -74,6 +75,7 @@ export default class ArchwayPanel extends Component {
     for (let r = 0; r < frame.height; r++) {
       for (let c = 0; c < frame.width; c++) {
         let material = this.materials.get(`${c}x${r}`);
+        if(ROTATE_CANVAS) material = this.materials.get(`${r}x${c}`);
         if (!material) continue;
         const n = (r * frame.width + c) * 4;
         const color =
