@@ -4,7 +4,7 @@ import Constants from "../Constants";
 import { Link } from "react-router-dom";
 import ModuleStore from "../utils/ModuleStore";
 import AuthStore from "../utils/AuthStore";
-import { json2data, makePNG } from "../utils/RenderUtils";
+import { imageData2png, animationBuffer2data } from "../utils/RenderUtils";
 import Pattern from "../components/Pattern";
 
 // images
@@ -31,22 +31,23 @@ class CodeScreen extends Component {
     window.removeEventListener("message", this.codeCallback);
   }
   codeCallback = msg => {
-    if (msg.origin !== "https://webassembly.studio") return;
+    // To make testing easier, we allow embedding WebAssembly Studio from any domain when
+    // running on localhost.
+    if (msg.origin !== "https://webassembly.studio" && window.location.hostname !== 'localhost') {
+      return;
+    }
+
     let module = msg.data;
-    if (module && module.type) {
+    if (module && module.type === "wasm-studio/module-publish") {
       if (!module.tags) module.tags = [];
       if (!module.title) module.title = "";
       if (!module.description) module.description = "";
       if (!module.author) module.author = "";
       if (!module.origin) module.origin = "wasmstudio";
       const anim = module.manifest.animation;
-      const frame = anim.data[0];
-      module.thumbnail = makePNG(anim, frame);
-      json2data(anim, anim.data).then(data => {
-        anim.data = data;
-        console.log("final module to preview is", module);
-        this.setState({ showPreviewSubmit: true, module: module });
-      });
+      anim.data = animationBuffer2data(anim.data, anim.rows, anim.cols, anim.frameCount);
+      module.thumbnail = imageData2png(anim.data[0]);
+      this.setState({ showPreviewSubmit: true, module: module });
     } else {
       this.showError(
         "Could not get the message from the editor. Please try again",
