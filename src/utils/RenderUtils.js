@@ -106,6 +106,8 @@ module.exports.animationBuffer2data = function (buffer, rows, cols, frames) {
             data[destOffset + 3] = 0xFF;
         }
 
+        new Uint32Array(data.buffer).reverse();
+
         result.push(imageData);
     }
 
