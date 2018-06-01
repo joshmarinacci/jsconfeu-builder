@@ -3,6 +3,8 @@ const BLACK = 0x000000FF;
 const RED   = 0xFF0000FF;
 const GREEN   = 0x00FF00FF;
 
+const ROTATE_CANVAS = true
+
 function getWidth(fs) { return fs.width }
 function getHeight(fs) { return fs.height }
 function getColorAt(fs, x,y, t) {
@@ -61,13 +63,31 @@ module.exports.makePNG = function(anim,frame) {
             ctx.fillRect(i,j,1,1)
         }
     }
+
+    if(ROTATE_CANVAS) return rotateCanvas(canvas).toDataURL('image/png')
     return canvas.toDataURL('image/png')
+}
+
+function rotateCanvas(c1) {
+    //return c1  // put this in to skip rotating
+    const c2 = document.createElement('canvas')
+    c2.width = c1.height
+    c2.height = c1.width
+    const ctx2 = c2.getContext('2d')
+    ctx2.translate(c1.height, 0)
+    ctx2.rotate(Math.PI / 2)
+    ctx2.drawImage(c1, 0, 0)
+    return c2
 }
 
 module.exports.data2png = function(anim, datas) {
     const canvas = document.createElement('canvas')
     canvas.width = anim.cols
     canvas.height = anim.rows
+    if(ROTATE_CANVAS) {
+        canvas.height = anim.cols
+        canvas.width = anim.rows
+    }
     function id2png(data,i) {
         return new Promise((res,rej) => {
             const context = canvas.getContext('2d')
@@ -93,6 +113,7 @@ module.exports.png2data = function(anim, pngs) {
     function ld(png,i) {
         return new Promise((res,rej) =>{
             const img = new Image()
+            img.crossOrigin = "anonymous";
             img.onload = () => {
                 const context = canvas.getContext('2d');
                 context.fillStyle = (i%2===0)?'red':'blue'
@@ -128,7 +149,15 @@ module.exports.json2data = function(anim, json) {
                     id.data[n+3] = 255 // force the alpha to 100% opaque
                 }
             }
-            res(id)
+            if(ROTATE_CANVAS) {
+                context.putImageData(id, 0, 0)
+                const c2 = rotateCanvas(canvas)
+                const ctx2 = c2.getContext('2d')
+                const id2 = ctx2.getImageData(0, 0, c2.width, c2.height)
+                res(id2)
+            } else {
+                res(id)
+            }
         })
     }
 

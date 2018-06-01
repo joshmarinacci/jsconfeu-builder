@@ -82,6 +82,7 @@ export default class ArchwayPanel extends Component {
           (frame.data[n + 2] << 8) |
           frame.data[n + 3];
         material.color.setHex(color >> 8); // The shift drops the alpha bits
+
       }
     }
     window.mats = this.materials;

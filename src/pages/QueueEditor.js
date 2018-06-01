@@ -216,7 +216,7 @@ const ModuleSummaryPanel = props => {
         </HBox>
         <HBox>
             <span>ID</span>
-            <b>&nbsp;{props.module._id}</b>
+            <b>&nbsp;{props.module._id} <a target="_blank" href={`https://vr.josh.earth/jsconfeu-builder/api/modules/${props.module._id}`}>view json</a></b>
         </HBox>
     </VBox>
 };
