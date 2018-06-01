@@ -33,8 +33,8 @@ export default class QueueEditor extends Component {
   addToQueue = m => ModuleStore.addModuleToQueue(m);
   archiveModule = m => ModuleStore.archiveModule(m);
   deleteFromQueue = (m, i) => ModuleStore.deleteModuleFromQueue(m, i);
-    queueUpdated = queue => this.setState({ queue: queue });
-    modulesUpdated = modules => this.setState({ modules: modules });
+  queueUpdated = queue => this.setState({ queue: queue });
+  modulesUpdated = modules => this.setState({ modules: modules });
   updateSearch = e =>
     this.setState({
       filter: makeNameFilter(e.target.value),
@@ -42,19 +42,19 @@ export default class QueueEditor extends Component {
     });
   clearSearch = () => this.setState({ filter: makeIdentityFilter() });
   componentDidMount() {
-      ModuleStore.on("queue", this.queueUpdated);
-      ModuleStore.on("modules", this.modulesUpdated);
+    ModuleStore.on("queue", this.queueUpdated);
+    ModuleStore.on("modules", this.modulesUpdated);
   }
   componentWillUnmount() {
-      ModuleStore.off("queue", this.queueUpdated);
-      ModuleStore.off("modules", this.modulesUpdated);
+    ModuleStore.off("queue", this.queueUpdated);
+    ModuleStore.off("modules", this.modulesUpdated);
   }
   render() {
     const queueModules = ModuleStore.getQueueModules();
     const allModules = this.state.modules.filter(this.state.filter);
     return (
       <article
-          className="content"
+        className="content"
         style={{
           height: "80vh",
           display: "grid",
@@ -93,7 +93,7 @@ export default class QueueEditor extends Component {
               key={m._id}
               module={m}
               onAdd={() => this.addToQueue(m)}
-              onArchive={()=>this.archiveModule(m)}
+              onArchive={() => this.archiveModule(m)}
             />
           ))}
         </ul>
@@ -118,7 +118,7 @@ export default class QueueEditor extends Component {
         >
           <DraggableList
             list={queueModules}
-            itemKey={"index"}
+            itemKey={"_id"}
             template={EditableModulePanel}
             container={() => this.queue_modules_container}
             padding={10}
@@ -165,58 +165,69 @@ class EditableModulePanel extends Component {
 }
 
 const VBox = props => {
-    const style = props.style || {};
-    style.display = "flex";
-    style.flexDirection = "column";
-    return <div style={style}>{props.children}</div>;
+  const style = props.style || {};
+  style.display = "flex";
+  style.flexDirection = "column";
+  return <div style={style}>{props.children}</div>;
 };
 const HBox = props => {
-    const style = props.style || {};
-    style.display = "flex";
-    style.flexDirection = "row";
-    return <div style={style}>{props.children}</div>;
+  const style = props.style || {};
+  style.display = "flex";
+  style.flexDirection = "row";
+  return <div style={style}>{props.children}</div>;
 };
 
 function formatTimestamp(ts) {
-    if(!ts) return ""
-    const date = new Date(ts)
-    date.getHours()
-    return `${date.getFullYear()}/${date.getMonth()}/${date.getDate()}
-     ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
+  if (!ts) return "";
+  const date = new Date(ts);
+  date.getHours();
+  return `${date.getFullYear()}/${date.getMonth()}/${date.getDate()}
+     ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
 }
 
-
 const ModuleSummaryPanel = props => {
-    const style = {
-        padding:'1em',
-        margin:'0.25em',
-        backgroundColor:'#333',
-        border:'1px solid gray',
-    }
-    let tags = []
-    if(props.module.tags) tags = props.module.tags
-    return <VBox style={style}>
-        <HBox>
-            <b>{props.module.title}</b>
-            <span>&nbsp;by&nbsp;</span>
-            <b>{props.module.author}</b>
-            <i style={{ flex: 1 }}>&nbsp;</i>
-            <button onClick={props.onAdd}>+</button>
-        </HBox>
-        <HBox>
-            <p>{props.module.description}</p>
-        </HBox>
-        <HBox>
-            <span>made </span>
-            <b>&nbsp;{formatTimestamp(props.module.timestamp)}</b>
-            <span>&nbsp;tags</span>
-            <b>&nbsp;{tags.join(",")}</b>
-            <span style={{ flex: 1 }}>&nbsp;</span>
-            <a onClick={props.onArchive}>x</a>
-        </HBox>
-        <HBox>
-            <span>ID</span>
-            <b>&nbsp;{props.module._id} <a target="_blank" href={`https://vr.josh.earth/jsconfeu-builder/api/modules/${props.module._id}`}>view json</a></b>
-        </HBox>
+  const style = {
+    padding: "1em",
+    margin: "0.25em",
+    backgroundColor: "#333",
+    border: "1px solid gray"
+  };
+  let tags = [];
+  if (props.module.tags) tags = props.module.tags;
+  return (
+    <VBox style={style}>
+      <HBox>
+        <b>{props.module.title}</b>
+        <span>&nbsp;by&nbsp;</span>
+        <b>{props.module.author}</b>
+        <i style={{ flex: 1 }}>&nbsp;</i>
+        <button onClick={props.onAdd}>+</button>
+      </HBox>
+      <HBox>
+        <p>{props.module.description}</p>
+      </HBox>
+      <HBox>
+        <span>made </span>
+        <b>&nbsp;{formatTimestamp(props.module.timestamp)}</b>
+        <span>&nbsp;tags</span>
+        <b>&nbsp;{tags.join(",")}</b>
+        <span style={{ flex: 1 }}>&nbsp;</span>
+        <a onClick={props.onArchive}>x</a>
+      </HBox>
+      <HBox>
+        <span>ID</span>
+        <b>
+          &nbsp;{props.module._id}{" "}
+          <a
+            target="_blank"
+            href={`https://vr.josh.earth/jsconfeu-builder/api/modules/${
+              props.module._id
+            }`}
+          >
+            view json
+          </a>
+        </b>
+      </HBox>
     </VBox>
+  );
 };
