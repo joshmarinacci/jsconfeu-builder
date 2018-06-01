@@ -40,6 +40,7 @@ export default class ArchwayPanel extends Component {
       "models/PreppedInstallation.obj",
       object => {
         object.position.set(0, -1.5, -8.5);
+        object.rotation.y = Math.PI;
         this.scene.add(object);
         for (let material of object.children[0].material) {
           this.materials.set(material.name, material);
