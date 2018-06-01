@@ -25,7 +25,7 @@ class Footer extends Component {
           <div className="footer__grid">
             <img className="footer__logo" src={logo} alt="Moz://a" />
             <ul className="footer__list">
-              <span className="footer__title">Links</span>
+              {/*<span className="footer__title">Links</span>
               <li className="footer__item">
                 <a hef="#">Link 1</a>
               </li>
@@ -37,7 +37,7 @@ class Footer extends Component {
               </li>
               <li className="footer__item">
                 <a href="#">Link 4</a>
-              </li>
+    </li>*/}
             </ul>
             <ul className="footer__list">
               <span className="footer__title">Mozilla</span>

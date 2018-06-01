@@ -1,5 +1,10 @@
 import React, { Component } from "react";
-import {BrowserRouter as Router, Redirect, Route, Switch} from "react-router-dom"
+import {
+  BrowserRouter as Router,
+  Redirect,
+  Route,
+  Switch
+} from "react-router-dom";
 
 // Styles & Icons
 import "./style/style.css";
@@ -23,8 +28,8 @@ import ModuleStore from "./utils/ModuleStore";
 import AuthStore from "./utils/AuthStore";
 
 // Google Analytics
-import ReactGA from 'react-ga';
-ReactGA.initialize('UA-000000-01');
+import ReactGA from "react-ga";
+ReactGA.initialize("UA-77033033-15");
 ReactGA.pageview(window.location.pathname + window.location.search);
 
 class App extends Component {
@@ -50,31 +55,32 @@ class App extends Component {
   }
   navTo = (screen, data) => this.setState({ screen: screen, data: data });
   render() {
-      return (
+    return (
       <div id="body">
         <Router>
-            <div>
-                <Navbar navTo={this.navTo} startAuth={() => AuthStore.start()} />
-                {this.renderCurrentScreen()}
-                <Footer user={this.state.user} />
-            </div>
+          <div>
+            <Navbar navTo={this.navTo} startAuth={() => AuthStore.start()} />
+            {this.renderCurrentScreen()}
+            <Footer user={this.state.user} />
+          </div>
         </Router>
       </div>
     );
   }
 
-    renderCurrentScreen() {
-        return <Switch>
-            <Route exact path="/" component={HomeScreen}/>
-            <Route exact path="/code" component={CodeScreen}/>
-            <Route exact path="/paint" render={() => <PaintScreen />} />
-            <Route exact path="/pipeline" render={() => <PipelineEditor />} />
-            <Route exact path="/queue" component={QueueScreen}/>
-            <Route exact path="/queue-editor" component={QueueEditor}/>
-            <Route exact path="/about" render={() => <AboutScreen />} />
-        </Switch>
-
-    }
+  renderCurrentScreen() {
+    return (
+      <Switch>
+        <Route exact path="/" component={HomeScreen} />
+        <Route exact path="/code" component={CodeScreen} />
+        <Route exact path="/paint" render={() => <PaintScreen />} />
+        <Route exact path="/pipeline" render={() => <PipelineEditor />} />
+        <Route exact path="/queue" component={QueueScreen} />
+        <Route exact path="/queue-editor" component={QueueEditor} />
+        <Route exact path="/about" render={() => <AboutScreen />} />
+      </Switch>
+    );
+  }
 }
 
 export default App;
