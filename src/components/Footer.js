@@ -25,21 +25,6 @@ class Footer extends Component {
           <div className="footer__grid">
             <img className="footer__logo" src={logo} alt="Moz://a" />
             <ul className="footer__list">
-              {/*<span className="footer__title">Links</span>
-              <li className="footer__item">
-                <a hef="#">Link 1</a>
-              </li>
-              <li className="footer__item">
-                <a href="#">Link 2</a>
-              </li>
-              <li className="footer__item">
-                <a href="#">Link 3</a>
-              </li>
-              <li className="footer__item">
-                <a href="#">Link 4</a>
-    </li>*/}
-            </ul>
-            <ul className="footer__list">
               <span className="footer__title">Mozilla</span>
               <li className="footer__item">
                 <a
@@ -123,6 +108,45 @@ class Footer extends Component {
                   href="https://www.mozilla.org/firefox/channel/desktop/"
                 >
                   Beta, Nightly, Developer Edition
+                </a>
+              </li>
+            </ul>
+            <ul className="footer__list">
+              <span className="footer__title">Rust</span>
+              <li className="footer__item">
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://www.rust-lang.org/"
+                >
+                  Homepage
+                </a>
+              </li>
+              <li className="footer__item">
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://doc.rust-lang.org/"
+                >
+                  Documentation
+                </a>
+              </li>
+              <li className="footer__item">
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://github.com/rustwasm/"
+                >
+                  Rust-WASM GitHub
+                </a>
+              </li>
+              <li className="footer__item">
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://github.com/rust-lang-nursery/rust-wasm"
+                >
+                  Rust-WASM Working Group
                 </a>
               </li>
             </ul>
