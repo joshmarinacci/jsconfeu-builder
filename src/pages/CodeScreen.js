@@ -37,8 +37,21 @@ class CodeScreen extends Component {
       return;
     }
 
+    if (!msg.data) {
+      this.showError(
+        "Could not get the message from the editor. Please try again",
+        [{ caption: "Dismiss", action: () => this.hideError() }]
+      );
+      return;
+    }
+
+    if (msg.data.type === "wasm-studio/fork") {
+      window.history.pushState(null, window.title, "code?module=" + msg.data.fiddle);
+      return;
+    }
+
     let module = msg.data;
-    if (module && module.type === "wasm-studio/module-publish") {
+    if (module.type === "wasm-studio/module-publish") {
       if (!module.tags) module.tags = [];
       if (!module.title) module.title = "";
       if (!module.description) module.description = "";
@@ -76,12 +89,17 @@ class CodeScreen extends Component {
     this.setState({ showError: false });
   }
   render() {
+    let url = Constants.EDITOR_URL;
+    if (window.location.search.indexOf("?module=") === 0) {
+      url += '&fiddle=' + window.location.search.substr("?module=".length);
+    }
+
     return (
       <div className="content">
         <iframe
           title="wasm editor"
           id="wasm-editor"
-          src={Constants.EDITOR_URL}
+          src={url}
         />
         {this.renderOverlay()}
         {this.renderError()}
