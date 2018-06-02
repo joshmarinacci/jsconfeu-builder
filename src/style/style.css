@@ -1255,8 +1255,7 @@ select {
       display: grid;
       grid-gap: 2rem;
       grid-template-rows: repeat(2, 1fr);
-      grid-template-columns: repeat(2, 1fr);
-      grid-auto-flow: column; } }
+      grid-template-columns: repeat(2, 1fr); } }
 
 .queue-rest .queue-module {
   display: flex;
