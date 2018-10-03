@@ -30,7 +30,8 @@ export default class QueueEditor extends Component {
       this.setState({ modules: modules })
     );
   }
-  addToQueue = m => ModuleStore.addModuleToQueue(m);
+    addToQueue = m => ModuleStore.addModuleToQueue(m);
+    addToQueueNext = m => ModuleStore.addModuleToQueueNext(m);
   archiveModule = m => ModuleStore.archiveModule(m);
   deleteFromQueue = (m, i) => ModuleStore.deleteModuleFromQueue(m, i);
   queueUpdated = queue => this.setState({ queue: queue });
@@ -93,6 +94,7 @@ export default class QueueEditor extends Component {
               key={m._id}
               module={m}
               onAdd={() => this.addToQueue(m)}
+              onAddNext={()=>this.addToQueueNext(m)}
               onArchive={() => this.archiveModule(m)}
             />
           ))}
@@ -152,11 +154,12 @@ class EditableModulePanel extends Component {
         <div>
           {this.props.dragHandle(<i className="fa fa-bars handle action" />)}
         </div>
-        <QueueModulePanel module={this.props.item} scale={4} />
-        <div>
+        <QueueModulePanel module={this.props.item} scale={4} style={{flex:1}}/>
+        <div style={{flex:0}}>
           <button
             className="fa fa-close"
             onClick={() => this.props.commonProps.onDelete(this.props.item)}
+            style={buttonStyle}
           />
         </div>
       </div>
@@ -184,6 +187,11 @@ function formatTimestamp(ts) {
   return `${date.getFullYear()}/${date.getMonth()}/${date.getDate()}
      ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
 }
+const buttonStyle = {
+    margin: '0.25em',
+    padding:'0.0em 0.25em',
+    borderRadius:'0.25em',
+}
 
 const ModuleSummaryPanel = props => {
   const style = {
@@ -196,12 +204,17 @@ const ModuleSummaryPanel = props => {
   if (props.module.tags) tags = props.module.tags;
   return (
     <VBox style={style}>
+        <HBox>
+            <button onClick={props.onAdd} style={buttonStyle}>add end</button>
+            <button onClick={props.onAddNext} style={buttonStyle}>add next</button>
+            <i style={{flex:1}}></i>
+            <button onClick={props.onArchive} style={buttonStyle}>archive</button>
+        </HBox>
       <HBox>
         <b>{props.module.title}</b>
         <span>&nbsp;by&nbsp;</span>
         <b>{props.module.author}</b>
         <i style={{ flex: 1 }}>&nbsp;</i>
-        <button onClick={props.onAdd}>+</button>
       </HBox>
       <HBox>
         <p>{props.module.description}</p>
@@ -212,7 +225,6 @@ const ModuleSummaryPanel = props => {
         <span>&nbsp;tags</span>
         <b>&nbsp;{tags.join(",")}</b>
         <span style={{ flex: 1 }}>&nbsp;</span>
-        <a onClick={props.onArchive}>x</a>
       </HBox>
       <HBox>
         <span>ID</span>

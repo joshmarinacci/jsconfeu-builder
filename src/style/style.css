@@ -1228,7 +1228,8 @@ select {
   padding-bottom: 4rem; }
 
 .queue-module {
-  position: relative; }
+  position: relative;
+  flex: 1; }
 
 .queue-first .queue-module__info {
   position: absolute;

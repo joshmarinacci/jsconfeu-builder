@@ -138,6 +138,11 @@ class ModuleStore {
     this.queue.modules = this.queue.expanded.map(m => m._id);
     return this.updateQueue();
   };
+  addModuleToQueueNext = m => {
+      this.queue.expanded.unshift(m)
+      this.queue.modules = this.queue.expanded.map(m => m._id);
+      return this.updateQueue();
+  }
   updateQueue = () => {
     return fetch(`${Constants.BASE_URL}/updatequeue`, {
       method: "POST",
