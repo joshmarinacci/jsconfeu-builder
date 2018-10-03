@@ -245,6 +245,7 @@ const ModuleSummaryPanel = props => {
             view json
           </a>
         </b>
+          <button disabled={true} style={buttonStyle}>remix</button>
       </HBox>
     </VBox>
   );
