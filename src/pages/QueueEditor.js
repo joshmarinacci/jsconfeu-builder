@@ -34,6 +34,7 @@ export default class QueueEditor extends Component {
     addToQueueNext = m => ModuleStore.addModuleToQueueNext(m);
   archiveModule = m => ModuleStore.archiveModule(m);
   deleteFromQueue = (m, i) => ModuleStore.deleteModuleFromQueue(m, i);
+  toQueueTop = m => ModuleStore.moveToQueueTop(m)
   queueUpdated = queue => this.setState({ queue: queue });
   modulesUpdated = modules => this.setState({ modules: modules });
   updateSearch = e =>
@@ -126,7 +127,8 @@ export default class QueueEditor extends Component {
             padding={10}
             onMoveEnd={this.moveEnded}
             commonProps={{
-              onDelete: this.deleteFromQueue
+              onDelete: this.deleteFromQueue,
+                onMoveUp: this.toQueueTop,
             }}
           />
           {/*{queueModules.map((m,i)=> <EditableModulePanel key={i} module={m} onDelete={()=>this.deleteFromQueue(m,i)}/>)}*/}
@@ -156,6 +158,10 @@ class EditableModulePanel extends Component {
         </div>
         <QueueModulePanel module={this.props.item} scale={4} style={{flex:1}}/>
         <div style={{flex:0}}>
+            <button className="fa fa-arrow-up"
+                    style={buttonStyle}
+                    onClick={()=>this.props.commonProps.onMoveUp(this.props.item)}
+            ></button>
           <button
             className="fa fa-close"
             onClick={() => this.props.commonProps.onDelete(this.props.item)}

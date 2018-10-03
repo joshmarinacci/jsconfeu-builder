@@ -164,6 +164,13 @@ class ModuleStore {
     console.log("the new queue is", this.queue.modules.length);
     return this.updateQueue();
   };
+  moveToQueueTop = m => {
+      const i = m.index
+      this.queue.expanded.splice(i,1)
+      this.queue.expanded.unshift(m)
+      this.queue.modules = this.queue.expanded.map(m => m._id);
+      return this.updateQueue();
+  }
 
 
     getThumbnailForModule(m) {
