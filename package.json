@@ -15,8 +15,7 @@
     "react-draggable-list": "^3.4.1",
     "react-ga": "^2.5.3",
     "react-router-dom": "^4.2.2",
-    "three": "^0.92.0",
-    "threejs-particle-shader": "^0.3.0"
+    "three": "^0.97.0"
   },
   "scripts": {
     "start": "react-scripts start",
