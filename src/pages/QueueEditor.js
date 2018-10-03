@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import ModuleStore from "../utils/ModuleStore";
 import QueueModulePanel from "../components/QueueModulePanel";
+import {ThumbnailPanel} from "../components/ThumbnailPanel"
 import DraggableList from "react-draggable-list";
 
 function makeIdentityFilter() {
@@ -225,7 +226,11 @@ const ModuleSummaryPanel = props => {
       <HBox>
         <p>{props.module.description}</p>
       </HBox>
-      <HBox>
+        <HBox>
+        <ThumbnailPanel module={props.module} scale={4}/>
+        </HBox>
+
+        <HBox>
         <span>made </span>
         <b>&nbsp;{formatTimestamp(props.module.timestamp)}</b>
         <span>&nbsp;tags</span>
