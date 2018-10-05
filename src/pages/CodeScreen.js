@@ -7,9 +7,44 @@ import AuthStore from "../utils/AuthStore";
 import { imageData2png, animationBuffer2data } from "../utils/RenderUtils";
 import Pattern from "../components/Pattern";
 
+
+/*
+workflow.
+ the first time you save we get a wasm-studio/fork event with a fiddle id
+
+ to reload a project pass in the fiddle id when generating the url for the iframe.
+
+ whenever the project is saved we get a wasm-studio/module-publish event with the manifest and a thumbnail
+ the manifest has source, the thumbnail is a PNG. the manifest also has the animation frames.
+
+ when the user goes to the about page or some other page then comes back they will no longer have a module
+ we can give them the option to reload the existing module or create something new.
+
+
+ on the queue page is a remix button next to each entry. clicking this will take the user to the code page
+ with the fiddle ID from that project so they can remix it.
+
+ in case the browser crashes or page is reloaded while editing, the fiddle ID is saved in local storage
+ once the thing is actually published you can't edit anymore, so remove the fiddle ID from local storage on publish
+
+bug: we only get hte fork message if you save and then preview, not just preview
+
+
+fixes:
+
+when we get a new fiddle ID from the editor we must set it on the module
+all mdoules must have fiddle IDs before saving
+the fiddle ID should be visible in the queue editor
+add a remix button to the queue viewer
+handle the fetching fiddle ID from local storage case, nuke when publishing
+change 'go back' to 'edit more' or 'go back to editing'
+
+ */
+
 // images
 import buildImg from "../img/build.png";
 
+const FIDDLE_ID_KEY = "wasm-fiddle-id"
 class CodeScreen extends Component {
   constructor(props) {
     super(props);
@@ -21,14 +56,33 @@ class CodeScreen extends Component {
       progressText: "nothing",
       showDone: false,
       showError: false,
-      error: { message: "nothing", actions: [] }
+      error: { message: "nothing", actions: [] },
+      fiddleID:null,
     };
   }
   componentDidMount() {
+    //attach callback for events from WASM studio
     window.addEventListener("message", this.codeCallback);
+
+    //load fiddleID from local storage
+    if(localStorage.getItem(FIDDLE_ID_KEY)) {
+      this.setState({fiddleID: localStorage.getItem(FIDDLE_ID_KEY), showInfo:false})
+    }
+
+    //reload fiddle ID from URL
+    if (window.location.search.indexOf("?module=") === 0) {
+       this.setState({fiddleID: window.location.search.substr("?module=".length), showInfo:false})
+    }
   }
   componentWillUnmount() {
     window.removeEventListener("message", this.codeCallback);
+  }
+
+  handleFork(msg) {
+      //change the history state to handle forward/back button issues
+      window.history.pushState(null, window.title, "code?module=" + msg.data.fiddle);
+      //save to local storage in case the browser is reloaded for some reason
+      localStorage.setItem(FIDDLE_ID_KEY,msg.data.fiddle)
   }
   codeCallback = msg => {
     // To make testing easier, we allow embedding WebAssembly Studio from any domain when
@@ -36,6 +90,9 @@ class CodeScreen extends Component {
     if (msg.origin !== "https://webassembly.studio" && window.location.hostname !== 'localhost') {
       return;
     }
+
+    //skip any message that wasn't from webassembly studio
+    if(msg.origin !== "https://webassembly.studio") return;
 
     if (!msg.data) {
       this.showError(
@@ -45,10 +102,7 @@ class CodeScreen extends Component {
       return;
     }
 
-    if (msg.data.type === "wasm-studio/fork") {
-      window.history.pushState(null, window.title, "code?module=" + msg.data.fiddle);
-      return;
-    }
+    if (msg.data.type === "wasm-studio/fork") return this.handleFork(msg)
 
     let module = msg.data;
     if (module.type === "wasm-studio/module-publish") {
@@ -90,9 +144,7 @@ class CodeScreen extends Component {
   }
   render() {
     let url = Constants.EDITOR_URL;
-    if (window.location.search.indexOf("?module=") === 0) {
-      url += '&fiddle=' + window.location.search.substr("?module=".length);
-    }
+    if(this.state.fiddleID !== null) url += "&fiddle=" + this.state.fiddleID
 
     return (
       <div className="content">
@@ -118,6 +170,8 @@ class CodeScreen extends Component {
       .then(res => {
         console.log("got the result", res);
         if (!res.success) return this.showError(res.message);
+        //remove fiddle ID from local storage so we don't try to edit it again
+          localStorage.removeItem(FIDDLE_ID_KEY)
         this.setState({ showProgress: false, showDone: true });
       })
       .catch(e => {
@@ -308,21 +362,6 @@ class TagEditor extends Component {
   }
 }
 
-// const VBox = props => {
-//   const style = props.style || {};
-//   style.display = "flex";
-//   style.flexDirection = "column";
-//   return <div style={style}>{props.children}</div>;
-// };
-// const HBox = props => {
-//   const style = props.style || {};
-//   style.display = "flex";
-//   style.flexDirection = "row";
-//   return <div style={style}>{props.children}</div>;
-// };
-// const Label = props => {
-//   return <label style={{ flex: 1 }}>{props.children}</label>;
-// };
 const Spacer = props => {
   return <span style={{ flex: 1 }} />;
 };
