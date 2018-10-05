@@ -1230,6 +1230,11 @@ select {
 .queue-module {
   position: relative;
   flex: 1; }
+  .queue-module button {
+    font-size: 75%;
+    padding: 0.5em 0.5em;
+    border-radius: 0.5em;
+    margin-left: 1em; }
 
 .queue-first .queue-module__info {
   position: absolute;

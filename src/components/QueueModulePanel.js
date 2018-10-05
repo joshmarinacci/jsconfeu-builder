@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import ArchwayPanel from "./ArchwayPanel";
 import {ThumbnailPanel} from './ThumbnailPanel'
+import Constants from '../Constants'
 
 
 export default class QueueModulePanel extends Component {
@@ -12,6 +13,12 @@ export default class QueueModulePanel extends Component {
     if (this.props.module && this.props.module._id !== newProps.module._id) {
         //TODO: make sure this works for the queue editor
     }
+  }
+
+  remix = () => {
+      console.log("remixing",this.props.module)
+      localStorage.setItem(Constants.FIDDLE_ID_KEY,this.props.module.fiddleID)
+      window.location.href = "./code"
   }
 
   render() {
@@ -36,6 +43,7 @@ export default class QueueModulePanel extends Component {
         <h3>{this.props.module.title}</h3>
         <p>{this.props.module.description}</p>
         <cite>Created by: {this.props.module.author}</cite>
+          <button onClick={this.remix} disabled={!this.props.module.fiddleID}>remix</button>
         {/*<i>{this.props.module.tags.join(", ")}</i>*/}
       </div>
     );

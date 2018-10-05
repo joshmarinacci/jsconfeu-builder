@@ -44,7 +44,6 @@ change 'go back' to 'edit more' or 'go back to editing'
 // images
 import buildImg from "../img/build.png";
 
-const FIDDLE_ID_KEY = "wasm-fiddle-id"
 class CodeScreen extends Component {
   constructor(props) {
     super(props);
@@ -65,8 +64,8 @@ class CodeScreen extends Component {
     window.addEventListener("message", this.codeCallback);
 
     //load fiddleID from local storage
-    if(localStorage.getItem(FIDDLE_ID_KEY)) {
-      this.setState({fiddleID: localStorage.getItem(FIDDLE_ID_KEY), showInfo:false})
+    if(localStorage.getItem(Constants.FIDDLE_ID_KEY)) {
+      this.setState({fiddleID: localStorage.getItem(Constants.FIDDLE_ID_KEY), showInfo:false})
     }
 
     //reload fiddle ID from URL
@@ -82,7 +81,7 @@ class CodeScreen extends Component {
       //change the history state to handle forward/back button issues
       window.history.pushState(null, window.title, "code?module=" + msg.data.fiddle);
       //save to local storage in case the browser is reloaded for some reason
-      localStorage.setItem(FIDDLE_ID_KEY,msg.data.fiddle)
+      localStorage.setItem(Constants.FIDDLE_ID_KEY,msg.data.fiddle)
   }
   codeCallback = msg => {
     // To make testing easier, we allow embedding WebAssembly Studio from any domain when
@@ -106,6 +105,13 @@ class CodeScreen extends Component {
 
     let module = msg.data;
     if (module.type === "wasm-studio/module-publish") {
+      if(!localStorage.getItem(Constants.FIDDLE_ID_KEY)) {
+        console.log("we didn't get a fork message yet, which means you need to save")
+        this.showError("Please save before previewing",[{caption:'Dismiss', action:()=>this.hideError()}])
+        return
+      } else {
+        module.fiddleID = localStorage.getItem(Constants.FIDDLE_ID_KEY)
+      }
       if (!module.tags) module.tags = [];
       if (!module.title) module.title = "";
       if (!module.description) module.description = "";
@@ -161,6 +167,9 @@ class CodeScreen extends Component {
   backClicked = () => this.setState({ showPreviewSubmit: false });
   dismissInfo = () => this.setState({ showInfo: false });
   doSubmit = module => {
+    if(!module.fiddleID) {
+      console.error("somehow we are saving without a fiddle ID. that means we can't remix.")
+    }
     this.setState({
       showPreviewSubmit: false,
       showProgress: true,
@@ -171,7 +180,7 @@ class CodeScreen extends Component {
         console.log("got the result", res);
         if (!res.success) return this.showError(res.message);
         //remove fiddle ID from local storage so we don't try to edit it again
-          localStorage.removeItem(FIDDLE_ID_KEY)
+          localStorage.removeItem(Constants.FIDDLE_ID_KEY)
         this.setState({ showProgress: false, showDone: true });
       })
       .catch(e => {
